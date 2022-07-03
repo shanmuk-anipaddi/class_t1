@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, Component } from "react";
 import User from "./User";
-import classes from "./users.module.css";
+import classes from "./Users.module.css";
 
 const DUMMY_USERS = [
   { id: 1, name: "Joe" },
@@ -8,27 +8,60 @@ const DUMMY_USERS = [
   { id: 3, name: "Siddu" },
 ];
 
-const Users = () => {
-  const [showUsers, setShowUsers] = useState(false);
+class Users extends Component {
+  constructor() {
+    super()
+    this.state = {
+      show: false,
+    };
+  }
+  showHandler() {
+    this.setState((showList) => {
+        //console.log(showList)
+      return {show:!showList.show};
+    });
+  }
 
-  const showHandler = () => {
-    setShowUsers((setUsetList) => !setUsetList);
-  };
+  render() {
+    const usersList = (
+      <ul>
+        {DUMMY_USERS.map((user) => {
+          return <User key={user.id} name={user.name} />;
+        })}
+      </ul>
+    );
+    return (
+      <div className={classes.users}>
+        <button onClick={this.showHandler.bind(this)}>
+          {this.state.show ? "Hide" : "Show"} Users
+        </button>
+        {this.state.show  && usersList}
+      </div>
+    );
+  }
+}
 
-  const usersList = (
-    <ul>
-      {DUMMY_USERS.map((user) => {
-        return <User name={user.name} />;
-      })}
-    </ul>
-  );
+// const Users = () => {
+//   const [showUsers, setShowUsers] = useState(false);
 
-  return (
-    <div className={classes.users}>
-      <button onClick={showHandler}>{showUsers ? "Hide" : "Show"} Users</button>
-      {showUsers && usersList}
-    </div>
-  );
-};
+//   const showHandler = () => {
+//     setShowUsers((setUsetList) => !setUsetList);
+//   };
+
+//   const usersList = (
+//     <ul>
+//       {DUMMY_USERS.map((user) => {
+//         return <User name={user.name} />;
+//       })}
+//     </ul>
+//   );
+
+//   return (
+//     <div className={classes.users}>
+//       <button onClick={showHandler}>{showUsers ? "Hide" : "Show"} Users</button>
+//       {showUsers && usersList}
+//     </div>
+//   );
+// };
 
 export default Users;
